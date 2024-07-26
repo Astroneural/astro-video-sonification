@@ -146,7 +146,7 @@ def convert_midi_to_wav(midi_file, output_file, soundfont_path):
 
 midi_file = midi_path
 output_file = midi_path + '.wav'
-soundfont_path = '/Path/To/TimGM6mb.sf'  # download at https://github.com/craffel/pretty-midi/blob/main/pretty_midi/TimGM6mb.sf2
+soundfont_path = '/Path/To/TimGM6mb.sf2'  # download at https://github.com/craffel/pretty-midi/blob/main/pretty_midi/TimGM6mb.sf2
 convert_midi_to_wav(midi_file, output_file, soundfont_path)
 
 video = VideoFileClip(video_path)
