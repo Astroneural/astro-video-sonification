@@ -6,7 +6,7 @@ import numpy as np
 from midi2audio import FluidSynth
 from moviepy.editor import VideoFileClip, AudioFileClip
 
-folder_path = "/Path/To/file_frames" # outputted by capture_video.py
+folder_path = "/Path/to/video_frames" # outputted by capture_video.py
 file_list = os.listdir(folder_path)
 frame_number = len(file_list)
 
@@ -16,9 +16,9 @@ fps = 25 # as of this version, must be manually checked
 
 circle_radius = 300
 
-min_object_size = 20
+min_object_size = 10
 
-brightness_threshold = 150
+brightness_threshold = 100
 
 frames_with_circles = []
 
@@ -89,17 +89,27 @@ for i in range(frame_number): # loop through each frame
                             pitch = twinkle_notes[note_index]
                             volume = 20 * np.log10(object_size / image.shape[0]) + 100
 
-
-                        if len(instrument.notes) > 0 and instrument.notes[-1].pitch == pitch:
-                            instrument.notes[-1].end = time_stamp + 0.2 # allow for elongation
-                        else:
+                        if instrument == instrument_harp:
+                            # Check if the previous note is the same as the current note
+                            if len(instrument.notes) > 0 and instrument.notes[-1].pitch == pitch:
+                                # Extend the duration of the previous note
+                                instrument.notes[-1].end = time_stamp + 0.2
+                            else:
+                                # Create a new note
+                                note = pretty_midi.Note(
+                                    velocity=int(volume),
+                                    pitch=int(pitch),
+                                    start=time_stamp,
+                                    end=time_stamp + 0.1
+                                )
+                                instrument.notes.append(note)
+                        else: 
                             note = pretty_midi.Note(
                                 velocity=int(volume),
                                 pitch=int(pitch),
                                 start=time_stamp,
                                 end=time_stamp + 0.1
                             )
-                            instrument.notes.append(note)
                         
                         instrument.notes.append(note)
                         triggered_regions.append((obj_box, time_stamp))                    
@@ -136,11 +146,11 @@ def convert_midi_to_wav(midi_file, output_file, soundfont_path):
 
 midi_file = midi_path
 output_file = midi_path + '.wav'
-soundfont_path = '/Path/to/TimGM6mb.sf'  # download at https://github.com/craffel/pretty-midi/blob/main/pretty_midi/TimGM6mb.sf2
+soundfont_path = '/Path/To/TimGM6mb.sf'  # download at https://github.com/craffel/pretty-midi/blob/main/pretty_midi/TimGM6mb.sf2
 convert_midi_to_wav(midi_file, output_file, soundfont_path)
 
 video = VideoFileClip(video_path)
 audio = AudioFileClip(output_file)
 
 final_video = video.set_audio(audio)
-final_video.write_videofile('sonified_video_' + timestr + '.mp4', codec='libx264', audio_codec='libmp3lame') # audio codec may be changed to aac. VS Code couldn't play audio code embedded that way, so this was better for my workflow.
+final_video.write_videofile('sonified_video_' + timestr + '.mp4', codec='libx264', audio_codec='libmp3lame')
