@@ -6,7 +6,7 @@ import numpy as np
 from midi2audio import FluidSynth
 from moviepy.editor import VideoFileClip, AudioFileClip
 
-folder_path = "/Users/shaum/space-sonification/carina_frames" # outputted by capture_video.py
+folder_path = "/Path/To/file_frames" # outputted by capture_video.py
 file_list = os.listdir(folder_path)
 frame_number = len(file_list)
 
@@ -136,7 +136,7 @@ def convert_midi_to_wav(midi_file, output_file, soundfont_path):
 
 midi_file = midi_path
 output_file = midi_path + '.wav'
-soundfont_path = 'Users/shaum/Downloads/TimGM6mb.sf'  # download at https://github.com/craffel/pretty-midi/blob/main/pretty_midi/TimGM6mb.sf2
+soundfont_path = '/Path/to/TimGM6mb.sf'  # download at https://github.com/craffel/pretty-midi/blob/main/pretty_midi/TimGM6mb.sf2
 convert_midi_to_wav(midi_file, output_file, soundfont_path)
 
 video = VideoFileClip(video_path)
