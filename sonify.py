@@ -143,4 +143,4 @@ video = VideoFileClip(video_path)
 audio = AudioFileClip(output_file)
 
 final_video = video.set_audio(audio)
-final_video.write_videofile('sonified_video_' + timestr + '.mp4', codec='libx264', audio_codec='libmp3lame')
+final_video.write_videofile('sonified_video_' + timestr + '.mp4', codec='libx264', audio_codec='libmp3lame') # audio codec may be changed to aac. VS Code couldn't play audio code embedded that way, so this was better for my workflow.
